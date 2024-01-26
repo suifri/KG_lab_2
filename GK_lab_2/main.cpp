@@ -23,6 +23,12 @@ void display()
 	glFlush();
 }
 
+void timer(int value)
+{
+	glutPostRedisplay();
+	glutTimerFunc(16, timer, 0);
+}
+
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
@@ -32,6 +38,7 @@ int main(int argc, char** argv)
 	glutCreateWindow("Lab 2");
 	init();
 	glutDisplayFunc(display);
+	glutTimerFunc(0, timer, 0);
 	glutMainLoop();
 
 	delete test;
