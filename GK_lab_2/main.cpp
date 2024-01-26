@@ -1,7 +1,9 @@
-#include <GL/glut.h>
+#include "Box.h"
 
+Box* test = new Box();
 const int SCREEN_WIDTH = 740;
 const int SCREEN_HEIGHT = 580;
+
 
 void init()
 {
@@ -17,7 +19,7 @@ void init()
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-
+	test->display();
 	glFlush();
 }
 
@@ -31,5 +33,9 @@ int main(int argc, char** argv)
 	init();
 	glutDisplayFunc(display);
 	glutMainLoop();
+
+	delete test;
+
+	return 0;
 }
 
