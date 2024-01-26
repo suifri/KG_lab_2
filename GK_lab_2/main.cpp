@@ -1,9 +1,11 @@
 #include "Box.h"
+#include <string>
 
 Box* test = new Box();
 const int SCREEN_WIDTH = 740;
 const int SCREEN_HEIGHT = 580;
-
+bool displayFlag = false;
+int cefCounter = 0;
 
 void init()
 {
@@ -18,15 +20,35 @@ void init()
 
 void display()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-	test->display();
-	glFlush();
+	if (displayFlag == true)
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+		test->display();
+		glFlush();
+	}
 }
 
 void timer(int value)
 {
 	glutPostRedisplay();
 	glutTimerFunc(16, timer, 0);
+}
+
+void onKeyboard(unsigned char key, int x, int y)
+{
+	std::string value = "";
+	value += key;
+
+	if (cefCounter == 0)
+	{
+		test->setCoeficientA(std::stoi(value));
+		cefCounter++;
+	}
+	else if(cefCounter == 1)
+	{
+		test->setCoeficientK(std::stoi(value));
+		displayFlag = true;
+	}
 }
 
 int main(int argc, char** argv)
@@ -39,6 +61,7 @@ int main(int argc, char** argv)
 	init();
 	glutDisplayFunc(display);
 	glutTimerFunc(0, timer, 0);
+	glutKeyboardFunc(onKeyboard);
 	glutMainLoop();
 
 	delete test;

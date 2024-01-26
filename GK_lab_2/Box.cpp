@@ -11,14 +11,18 @@ Box::Box()
 	this->flag = true;
 	this->coeficientA = 2;
 	this->screenHeight = 580;
-	this->coeficientK = 2;
+	this->coeficientK = 5;
+	this->scaleFlag = true;
+
+	this->scaleStep = this->coeficientK / 100.0;
+	this->scaleCounter = 1 + this->scaleStep;
 }
 
 void Box::update()
 {
-	if (this->getMaxY() + this->y_offset + this->coeficientA * 0.5 * 0.5 > 580)
+	if (this->getMaxY() * scaleCounter + this->y_offset + this->coeficientA * 0.5 * 0.5 > 580)
 		flag = false;
-	else if (this->getMinY() + this->y_offset + this->coeficientA * 0.5 * 0.5 < 0)
+	else if (this->getMinY() * scaleCounter + this->y_offset + this->coeficientA * 0.5 * 0.5 < 0)
 		flag = true;
 
 	if (flag == true)
@@ -27,15 +31,48 @@ void Box::update()
 		this->y_offset -= this->coeficientA * 0.5 * 0.5;
 }
 
+void Box::setCoeficientK(const GLint coeficientK)
+{
+	this->coeficientK = coeficientK;
+
+	this->scaleStep = this->coeficientK / 100.0;
+	this->scaleCounter = 1 + this->scaleStep;
+}
+
+void Box::setCoeficientA(const GLint coeficientA)
+{
+	this->coeficientA = coeficientA;
+}
+
 void Box::display()
 {
 	glLoadIdentity();
 
 	glPushMatrix();
 
-	glTranslatef(350.0f, y_offset, 0.0f);
 
+	glTranslatef(350.0f, y_offset, 0.0f);
 	this->update();
+
+	if (counter <= 100)
+	{
+		glScalef(scaleCounter, scaleCounter, 0);
+
+		scaleCounter += scaleStep;
+	}
+
+	if (counter > 100)
+	{
+		scaleCounter -= scaleStep;
+		glScalef(scaleCounter, scaleCounter, 0);
+	}
+
+	++counter;
+	if (counter > 201)
+	{
+		counter = 0;
+	}
+
 
 	glBegin(GL_QUADS);
 	glColor3f(0.0f, 1.0f, 0.0f);
@@ -44,6 +81,7 @@ void Box::display()
 	glEnd();
 
 	glPopMatrix();
+
 	glutSwapBuffers();
 }
 
