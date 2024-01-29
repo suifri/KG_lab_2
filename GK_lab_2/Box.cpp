@@ -8,14 +8,14 @@ Box::Box()
 	this->dots.push_back(std::vector<GLfloat>{10.0f, 10.0f});
 
 	this->y_offset = 10;
-	this->x_offset = 2;
+	this->x_offset = 1.5;
 	this->flag = true;
 	this->coeficientA = 2;
 	this->screenHeight = 580;
 	this->coeficientK = 5;
 	this->scaleFlag = true;
 	this->screenWidth = 740;
-	this->currentX = this->screenWidth / 2.0;
+	this->currentX = this->screenWidth / 2.0 - 10;
 	this->xFlag = true;
 
 	this->scaleStep = this->coeficientK / 100.0;
